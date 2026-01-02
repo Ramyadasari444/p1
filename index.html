@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SupportDesk CMS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body { background: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
+        .hidden { display: none !important; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .hero-img { width: 100%; height: 150px; object-fit: cover; border-radius: 12px 12px 0 0; }
+        .btn-delete { color: #dc3545; cursor: pointer; transition: 0.2s; border: none; background: none; }
+        .btn-delete:hover { color: #a71d2a; transform: scale(1.1); }
+        
+        #customAlert {
+            position: fixed; top: 20px; right: 20px; z-index: 2000;
+            min-width: 320px; border-left: 6px solid #198754;
+            animation: slideIn 0.4s ease forwards;
+        }
+        @keyframes slideIn { from { transform: translateX(120%); } to { transform: translateX(0); } }
+    </style>
+</head>
+<body>
+
+<div id="customAlert" class="card p-3 hidden bg-white">
+    <div class="d-flex align-items-center">
+        <i class="fas fa-check-circle text-success fs-3 me-3"></i>
+        <div>
+            <h6 class="m-0 fw-bold">Success!</h6>
+            <small class="text-muted">Operation completed successfully.</small>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-dark bg-primary shadow-sm mb-4">
+    <div class="container">
+        <span class="navbar-brand fw-bold"><i class="fas fa-headset me-2"></i> SupportDesk CMS</span>
+        <button id="logoutBtn" class="btn btn-sm btn-outline-light hidden" onclick="logout()">Logout</button>
+    </div>
+</nav>
+
+<div class="container">
+    <div id="selectionScreen" class="row justify-content-center py-5">
+        <div class="col-md-5 text-center card p-5">
+            <h3 class="fw-bold mb-4">Support Portal</h3>
+            <button class="btn btn-primary btn-lg mb-3 w-100 shadow-sm" onclick="openAuth('user')">User Login</button>
+            <button class="btn btn-outline-dark btn-lg w-100" onclick="openAuth('admin')">Admin Access</button>
+        </div>
+    </div>
+
+    <div id="userSection" class="row g-4 hidden">
+        <div class="col-md-4">
+            <div class="card overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" class="hero-img">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">Submit Ticket</h5>
+                    <form id="complaintForm">
+                        <input type="text" id="cName" class="form-control mb-2" placeholder="Full Name" required>
+                        <input type="email" id="cEmail" class="form-control mb-2" placeholder="Email" required>
+                        <textarea id="cDesc" class="form-control mb-3" placeholder="Describe issue..." rows="3" required></textarea>
+                        <button type="submit" class="btn btn-primary w-100 fw-bold">Submit</button>
+                        <button type="button" class="btn btn-light border w-100 mt-2" onclick="toggleHistory()">📜 View History</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 hidden" id="historyContainer">
+            <div class="card p-4">
+                <h5 class="fw-bold mb-3">My Complaints</h5>
+                <table class="table table-hover align-middle">
+                    <thead class="table-light"><tr><th>Date</th><th>Issue</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody id="userHistoryTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminSection" class="hidden">
+        <div class="card p-4">
+            <h5 class="fw-bold mb-4">Admin Management</h5>
+            <table class="table table-hover align-middle">
+                <thead class="table-dark"><tr><th>Date</th><th>User</th><th>Description</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="adminTable"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="authModal" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content p-4 text-center border-0 shadow-lg">
+            <h5 id="authTitle" class="fw-bold mb-3">Login</h5>
+            <div id="authTabs" class="mb-3 small">
+                <button class="btn btn-sm btn-link" onclick="setMode('login')">Login</button> | 
+                <button class="btn btn-sm btn-link" onclick="setMode('reg')">Register</button>
+            </div>
+            <form id="authForm">
+                <input type="hidden" id="authRole">
+                <input type="text" id="authUser" class="form-control mb-2" placeholder="Username" required>
+                <input type="password" id="authPass" class="form-control mb-3" placeholder="Password" required>
+                <button type="submit" id="authBtn" class="btn btn-primary w-100">Continue</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
